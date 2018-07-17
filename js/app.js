@@ -27,15 +27,15 @@ Seguro.prototype.cotizarSeguro = function () {
 		----------EUROPEO: 1.35----------------------
 	 */
 	switch (this.marca) {
-		case 'americano' : 
-							cantidad = base * 1.15;
-							break;
-		case 'asiatico' : 
-							cantidad = base * 1.05;
-							break;
-		case 'europeo' : 
-							cantidad = base * 1.35;
-							break;
+		case 'Americano':
+			cantidad = base * 1.15;
+			break;
+		case 'Asiatico':
+			cantidad = base * 1.05;
+			break;
+		case 'Europeo':
+			cantidad = base * 1.35;
+			break;
 	}
 	// Diferencia entre cada año
 	const diferenciaAnios = new Date().getFullYear() - this.anio;
@@ -45,14 +45,15 @@ Seguro.prototype.cotizarSeguro = function () {
 		SI EL SEGURO ES BASICO SE MULTIPLICA POR 30% MAS
 		SI EL SEGURO ES COMPLETO SE MULTIPLICA POR 50% MAS
 	*/
-	if (this.tipo === 'basico') {
+	if (this.tipo === 'Basico') {
 		cantidad *= 1.30;
 	} else {
 		cantidad *= 1.50;
 	}
+	cantidadFinal = cantidad.toFixed(2);
 
-	return cantidad;
-	
+	return cantidadFinal;
+
 }
 
 // Clase de Ui
@@ -64,10 +65,10 @@ Ui.prototype.mostrarMensaje = function (mensaje, tipo) {
 	// comprueba el tipo de mensaje que tiene que mostrar
 	if (tipo === 'error') {
 		// añade las clases necesarias e inserta el mensaje
-		divMensaje.classList.add('mensaje','error');
+		divMensaje.classList.add('mensaje', 'error');
 		divMensaje.innerHTML = `${mensaje}`;
 	} else {
-		divMensaje.classList.add('mensaje','correcto');
+		divMensaje.classList.add('mensaje', 'correcto');
 		divMensaje.innerHTML = `${mensaje}`;
 	}
 
@@ -77,6 +78,30 @@ Ui.prototype.mostrarMensaje = function (mensaje, tipo) {
 	setTimeout(function () {
 		document.querySelector('.mensaje').remove();
 	}, 2000);
+}
+// Muestra los resultados en pantalla
+Ui.prototype.mostrarResultado = function (seguro, cantidad) {
+	const spinner = document.querySelector('#cargando img');
+	const divResultado = document.querySelector('#resultado');
+	const divcontenido = document.createElement('div');
+	
+	spinner.style.display = 'block';
+	divcontenido.className = 'resultado';
+	divcontenido.innerHTML = `
+	<p class="resumen">Resumen:</p>
+	<p>Marca seleccionada: ${seguro.marca}</p>
+	<p>Año seleccionado: ${seguro.anio}</p>
+	<p>Tipo: ${seguro.tipo}</p>
+	<p>Total a pagar: $ ${cantidad}</p>
+	`;
+	
+	setTimeout(function () {
+		spinner.style.display = 'none';
+		divResultado.appendChild(divcontenido);
+		
+		
+	}, 2000);
+
 }
 
 
@@ -103,10 +128,16 @@ formulario.addEventListener('submit', function (e) {
 		// llamamos al proto mostrarMensaje para que muestre en la interfaz el mensaje de error
 		UI.mostrarMensaje('Faltan campos por llenar, por favor verifica', 'error');
 	} else {
+
+		const resultado = document.querySelector('#resultado div');
+		if (resultado != null) {
+			resultado.remove();
+		}
 		// creamos un objeto nuevo con el constructor de seguro
 		const seguro = new Seguro(marcaSeleccionada, anioSeleccionado, tipo);
 		const cantidad = seguro.cotizarSeguro();
 		// Llamamos al proto mostrar mensaje para que muestre en la interfaz el mensaje de correcto
 		UI.mostrarMensaje('Los datos estan correcto, estamos procesando la información', 'correcto');
+		UI.mostrarResultado(seguro, cantidad);
 	}
 });

@@ -50,28 +50,25 @@ header h1 {
     margin-top: 30px;
 }
 #cargando {
-    text-align: center;
+	 text-align: center;
+	 
 }
 #cargando img {
-    display: none;
-    margin: 0 auto;
+	 margin: 0 auto;
+	 display: none;
 }
-#resultado  {
-    margin-bottom: 40px;
+.resultado  {
+	border: 1px solid #26C6DA;
+	padding: 0px 0px 20px 0;
+	margin-bottom: 10px;
+	text-align: center;
+	font-weight: bold;
 }
-#resultado div {
-    border: 1px solid #26C6DA;
-    text-align: center;
-    padding: 0  0 20px 0;
-}
-#resultado div p {
-    margin-bottom: 0;
-}
-#resultado div p.header {
-    background-color: #26C6DA;
-    margin-bottom: 10px;
-    color:white;
-    padding: 10px;
-    text-transform: uppercase;
-    font-weight: bold;
+.resumen {
+	background: #26C6DA;
+	text-align: center;
+	width: 100%;
+	text-transform: uppercase;
+	color: #fff;
+	font-weight: bold;
 }
